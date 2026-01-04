@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistik - Duodaniel</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-gradient-1: #1e3c72;
+            --bg-gradient-2: #2a5298;
+            --bg-gradient-3: #7a1e2c;
+            --bg-gradient-4: #c0392b;
+            --sidebar-bg: rgba(255, 255, 255, 0.98);
+            --content-bg: rgba(255, 255, 255, 0.98);
+            --text-primary: #333;
+            --text-secondary: #777;
+            --card-bg: #f8f9fa;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-gradient-1: #0a1628;
+            --bg-gradient-2: #1a2642;
+            --bg-gradient-3: #4a0e18;
+            --bg-gradient-4: #6a1e15;
+            --sidebar-bg: rgba(20, 25, 35, 0.98);
+            --content-bg: rgba(25, 30, 40, 0.98);
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaa;
+            --card-bg: #1e2530;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 25%, var(--bg-gradient-3) 75%, var(--bg-gradient-4) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 15%;
+            left: 15%;
+            background: radial-gradient(circle, rgba(30, 60, 114, 0.3), transparent);
+        }
+
+        .circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 4s;
+            background: radial-gradient(circle, rgba(122, 30, 44, 0.3), transparent);
+        }
+
+        .circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 35%;
+            right: 30%;
+            animation-delay: 2s;
+            background: radial-gradient(circle, rgba(42, 82, 152, 0.3), transparent);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateY(-40px) translateX(40px) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Backdrop Overlay */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            box-shadow: 4px 0 30px var(--shadow);
+            z-index: 1000;
+            padding: 30px 20px;
+            overflow-y: auto;
+            transition: all 0.4s ease;
+            transform: translateX(-280px);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            border-radius: 10px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .sidebar-header {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo-icon {
+            font-size: 2rem;
+        }
+
+        .sidebar-logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-close {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+        }
+
+        /* Clock Widget */
+        .clock-widget {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .clock-time {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .clock-date {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .clock-day {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ccc;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        /* Sidebar Menu */
+        .sidebar-menu {
+            margin-bottom: 25px;
+        }
+
+        .menu-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.1), rgba(122, 30, 44, 0.1));
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            color: white;
+        }
+
+        .menu-icon {
+            font-size: 1.3rem;
+        }
+
+        /* User Stats in Sidebar */
+        .sidebar-stats {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .sidebar-stat-item {
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .sidebar-stat-value {
+            font-size: 1.1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--content-bg);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: all 0.4s ease;
+            color: var(--text-primary);
+        }
+
+        .hamburger.sidebar-active {
+            left: 300px;
+        }
+
+        .hamburger span {
+            font-size: 1.5rem;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 100%;
+            margin-left: 0;
+            min-height: 100vh;
+            padding: 100px 60px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--content-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease backwards;
+        }
+
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-icon {
+            font-size: 2.5rem;
+        }
+
+        .stat-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card-value {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-card-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--content-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+        }
+
+        /* Level Progress */
+        .level-progress-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .level-progress-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .level-progress-item:hover {
+            transform: translateX(5px);
+        }
+
+        .level-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .level-progress-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .level-progress-percentage {
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .level-progress-bar {
+            background: rgba(0, 0, 0, 0.1);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dark-mode .level-progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #7a1e2c);
+            border-radius: 10px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .level-progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Activity Chart */
+        .activity-chart {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .activity-day {
+            aspect-ratio: 1;
+            background: var(--card-bg);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .activity-day.active {
+            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .activity-day:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .activity-day-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .activity-day-count {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar-close {
+                display: block;
+            }
+
+            .main-content {
+                padding: 80px 25px 40px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <!-- BACKDROP OVERLAY -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <span class="sidebar-logo-icon">📚</span>
+                <span class="sidebar-logo-text">Duodaniel</span>
+            </div>
+            <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+        </div>
+
+        <!-- Clock Widget -->
+        <div class="clock-widget">
+            <div class="clock-time" id="clockTime">00:00:00</div>
+            <div class="clock-date" id="clockDate">Loading...</div>
+            <div class="clock-day" id="clockDay">Loading...</div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <div class="theme-label">
+                <span id="themeIcon">☀️</span>
+                <span id="themeText">Mode Terang</span>
+            </div>
+            <div class="toggle-switch" id="themeToggle" onclick="toggleTheme()">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="sidebar-stats">
+            <div class="sidebar-stat-item">
+                <span class="sidebar-stat-label">Total Skor</span>
+                <span class="sidebar-stat-value" id="sidebarScore">0</span>
+            </div>
+            <div class="sidebar-stat-item">
+                <span class="sidebar-stat-label">Level Terbuka</span>
+                <span class="sidebar-stat-value">6/6</span>
+            </div>
+            <div class="sidebar-stat-item">
+                <span class="sidebar-stat-label">Streak Hari</span>
+                <span class="sidebar-stat-value">0</span>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="sidebar-menu">
+            <div class="menu-title">Menu Utama</div>
+            <a href="index.html" class="menu-item">
+                <span class="menu-icon">🏠</span>
+                <span>Beranda</span>
+            </a>
+            <a href="statistik.html" class="menu-item active">
+                <span class="menu-icon">📊</span>
+                <span>Statistik</span>
+            </a>
+            <a href="pencapaian.html" class="menu-item">
+                <span class="menu-icon">🏆</span>
+                <span>Pencapaian</span>
+            </a>
+            <a href="pengaturan.html" class="menu-item">
+                <span class="menu-icon">⚙️</span>
+                <span>Pengaturan</span>
+            </a>
+        </div>
+
+        <div class="sidebar-menu">
+            <div class="menu-title">Bantuan</div>
+            <a href="panduan.html" class="menu-item">
+                <span class="menu-icon">📖</span>
+                <span>Panduan</span>
+            </a>
+            <a href="feedback.html" class="menu-item">
+                <span class="menu-icon">💬</span>
+                <span>Feedback</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- HAMBURGER -->
+    <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+        <span>☰</span>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">📊 Statistik Pembelajaran</h1>
+            <p class="page-subtitle">Lihat progress dan pencapaian belajarmu</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">🎯</div>
+                    <div class="stat-card-title">Total Skor</div>
+                </div>
+                <div class="stat-card-value" id="totalScore">0</div>
+                <div class="stat-card-label">Poin yang dikumpulkan</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">✅</div>
+                    <div class="stat-card-title">Soal Diselesaikan</div>
+                </div>
+                <div class="stat-card-value" id="completedQuestions">0</div>
+                <div class="stat-card-label">Dari 120 total soal</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">⏱️</div>
+                    <div class="stat-card-title">Total Waktu</div>
+                </div>
+                <div class="stat-card-value" id="totalTime">0</div>
+                <div class="stat-card-label">Menit belajar</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">📈</div>
+                    <div class="stat-card-title">Rata-rata Skor</div>
+                </div>
+                <div class="stat-card-value" id="averageScore">0%</div>
+                <div class="stat-card-label">Persentase keberhasilan</div>
+            </div>
+        </div>
+
+        <!-- Level Progress -->
+        <div class="chart-container">
+            <h2 class="chart-title">Progress Per Level</h2>
+            <div class="level-progress-container" id="levelProgress">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Activity Chart -->
+        <div class="chart-container">
+            <h2 class="chart-title">Aktivitas 7 Hari Terakhir</h2>
+            <div class="activity-chart" id="activityChart">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load statistics data
+        function loadStatistics() {
+            // Get data from localStorage
+            const totalScore = parseInt(localStorage.getItem('totalScore')) || 0;
+            const completedLessons = parseInt(localStorage.getItem('completedLessons')) || 0;
+
+            // Update main stats
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('sidebarScore').textContent = totalScore;
+            document.getElementById('completedQuestions').textContent = completedLessons;
+
+            // Calculate total time
+            let totalTime = 0;
+            let totalPercentage = 0;
+            let completedLevels = 0;
+
+            for (let i = 1; i <= 6; i++) {
+                const time = parseInt(localStorage.getItem(`level_${i}_time`)) || 0;
+                totalTime += time;
+
+                const percentage = parseInt(localStorage.getItem(`level_${i}_percentage`)) || 0;
+                if (percentage > 0) {
+                    totalPercentage += percentage;
+                    completedLevels++;
+                }
+            }
+
+            // Display total time in minutes
+            document.getElementById('totalTime').textContent = Math.floor(totalTime / 60);
+
+            // Calculate average score
+            const averageScore = completedLevels > 0 ? Math.round(totalPercentage / completedLevels) : 0;
+            document.getElementById('averageScore').textContent = averageScore + '%';
+
+            // Load level progress
+            loadLevelProgress();
+
+            // Load activity chart
+            loadActivityChart();
+        }
+
+        // Load level progress bars
+        function loadLevelProgress() {
+            const levels = [
+                { id: 1, name: 'Level 1 - Basic', icon: '🌱', total: 20 },
+                { id: 2, name: 'Level 2 - Intermediate', icon: '🔥', total: 20 },
+                { id: 3, name: 'Level 3 - Advanced', icon: '⚡', total: 20 },
+                { id: 4, name: 'Level 4 - EZ inimah', icon: '☠️', total: 20 },
+                { id: 5, name: 'Level 5 - Anak TK ini', icon: '🥱', total: 20 },
+                { id: 6, name: 'Level 6 - Fufufafa', icon: '😈', total: 20 }
+            ];
+
+            const container = document.getElementById('levelProgress');
+            container.innerHTML = '';
+
+            levels.forEach((level, index) => {
+                const completed = localStorage.getItem(`level_${level.id}_completed`) === 'true';
+                const percentage = parseInt(localStorage.getItem(`level_${level.id}_percentage`)) || 0;
+                const score = parseInt(localStorage.getItem(`level_${level.id}_score`)) || 0;
+
+                const progressHTML = `
+        <div class="level-progress-item" style="animation-delay: ${index * 0.1}s;">
+          <div class="level-progress-header">
+            <div class="level-progress-name">
+              <span style="font-size: 1.5rem;">${level.icon}</span>
+              <span>${level.name}</span>
+            </div>
+            <div class="level-progress-percentage">${percentage}%</div>
+          </div>
+          <div class="level-progress-bar">
+            <div class="level-progress-fill" style="width: ${percentage}%;"></div>
+          </div>
+          <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">
+            ${completed ? `✅ Selesai - Skor: ${score}/${level.total * 5}` : '⏳ Belum dikerjakan'}
+          </div>
+        </div>
+      `;
+
+                container.innerHTML += progressHTML;
+            });
+        }
+
+        // Load activity chart (7 days)
+        function loadActivityChart() {
+            const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const container = document.getElementById('activityChart');
+            container.innerHTML = '';
+
+            const today = new Date().getDay();
+
+            days.forEach((day, index) => {
+                // Mock data - replace with actual activity data if you track it
+                const isActive = index <= today;
+                const count = isActive ? Math.floor(Math.random() * 10) : 0;
+
+                const dayHTML = `
+        <div class="activity-day ${isActive ? 'active' : ''}">
+          <div class="activity-day-name">${day}</div>
+          <div class="activity-day-count">${count}</div>
+        </div>
+      `;
+
+                container.innerHTML += dayHTML;
+            });
+        }
+
+        // Initialize
+        loadStatistics();
+
+        // Clock Function
+        function updateClock() {
+            const now = new Date();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clockTime').textContent = `${hours}:${minutes}:${seconds}`;
+
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            document.getElementById('clockDate').textContent = `${date} ${month} ${year}`;
+            document.getElementById('clockDay').textContent = dayName;
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+
+        
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const toggle = document.getElementById('themeToggle');
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+
+            body.classList.toggle('dark-mode');
+            toggle.classList.toggle('active');
+
+            if (body.classList.contains('dark-mode')) {
+                icon.textContent = '🌙';
+                text.textContent = 'Mode Gelap';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.textContent = '☀️';
+                text.textContent = 'Mode Terang';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            toggleTheme();
+        }
+
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.getElementById('hamburger');
+            const backdrop = document.getElementById('sidebarBackdrop');
+
+            sidebar.classList.toggle('active');
+            hamburger.classList.toggle('sidebar-active');
+            backdrop.classList.toggle('active');
+        }
+
+        // Refresh stats every 2 seconds
+        setInterval(loadStatistics, 2000);
+    </script>
+
+</body>
+
+</html>
