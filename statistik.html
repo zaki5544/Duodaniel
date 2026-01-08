@@ -651,46 +651,280 @@
             gap: 10px;
         }
 
-        /* Activity Chart */
-        .activity-chart {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+        /* Evaluation Table */
+        .evaluation-table {
+            width: 100%;
             margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
         }
 
-        .activity-day {
-            aspect-ratio: 1;
+        .evaluation-header {
             background: var(--card-bg);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
+            border-radius: 10px;
+        }
+
+        .evaluation-header th {
+            padding: 15px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
             color: var(--text-secondary);
+            text-align: left;
+        }
+
+        .evaluation-header th:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .evaluation-header th:last-child {
+            border-radius: 0 10px 10px 0;
+            text-align: center;
+        }
+
+        .evaluation-row {
+            background: var(--card-bg);
+            border-radius: 10px;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .activity-day.active {
-            background: linear-gradient(135deg, #1e3c72, #7a1e2c);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .activity-day:hover {
-            transform: scale(1.1);
+        .evaluation-row:hover {
+            transform: translateX(5px);
             box-shadow: 0 5px 15px var(--shadow);
         }
 
-        .activity-day-name {
-            font-weight: 700;
-            margin-bottom: 5px;
+        .evaluation-row td {
+            padding: 15px;
+            border-top: none;
         }
 
-        .activity-day-count {
-            font-size: 1.2rem;
+        .evaluation-row td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .evaluation-row td:last-child {
+            border-radius: 0 10px 10px 0;
+            text-align: center;
+        }
+
+        .eval-level {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .eval-level-icon {
+            font-size: 1.8rem;
+        }
+
+        .eval-percentage {
+            font-size: 1.5rem;
             font-weight: 900;
+        }
+
+        .eval-percentage.excellent {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .eval-percentage.good {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .eval-percentage.average {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .eval-score {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .eval-time {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .eval-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .eval-badge.perfect {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.2), rgba(56, 161, 105, 0.2));
+            color: #22543d;
+        }
+
+        .eval-badge.great {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            color: #553c9a;
+        }
+
+        .eval-badge.good {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+            color: #c53030;
+        }
+
+        .eval-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .eval-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .eval-empty-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Feedback Section */
+        .feedback-section {
+            background: var(--content-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease;
+        }
+
+        .feedback-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feedback-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-card.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(251, 191, 36, 0.05));
+        }
+
+        .feedback-card.danger {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(252, 165, 165, 0.05));
+        }
+
+        .feedback-card.success {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(167, 243, 208, 0.05));
+        }
+
+        .feedback-card.info {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 197, 253, 0.05));
+        }
+
+        .feedback-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .feedback-icon {
+            font-size: 2rem;
+        }
+
+        .feedback-type {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feedback-card.warning .feedback-type {
+            color: #d97706;
+        }
+
+        .feedback-card.danger .feedback-type {
+            color: #dc2626;
+        }
+
+        .feedback-card.success .feedback-type {
+            color: #059669;
+        }
+
+        .feedback-card.info .feedback-type {
+            color: #2563eb;
+        }
+
+        .feedback-message {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .feedback-suggestion {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .feedback-suggestion {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feedback-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feedback-stat-item {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .dark-mode .feedback-stat-item {
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* Mobile */
@@ -718,6 +952,49 @@
             .level-progress-container,
             .others-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+
+            .evaluation-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .evaluation-header th {
+                font-size: 0.75rem;
+                padding: 10px 8px;
+            }
+
+            .evaluation-row td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            .eval-level-icon {
+                font-size: 1.4rem;
+            }
+
+            .eval-percentage {
+                font-size: 1.2rem;
+            }
+
+            .eval-score {
+                font-size: 0.95rem;
+            }
+
+            .eval-time {
+                font-size: 0.8rem;
+            }
+
+            .feedback-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-icon {
+                font-size: 1.5rem;
+            }
+
+            .feedback-message {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -871,12 +1148,34 @@
             </div>
         </div>
 
-        <!-- Activity Chart -->
-        <div class="chart-container">
-            <h2 class="chart-title">Aktivitas 7 Hari Terakhir</h2>
-            <div class="activity-chart" id="activityChart">
+        <!-- Feedback / Weakness Analysis -->
+        <div class="feedback-section" id="feedbackSection">
+            <h2 class="feedback-title">
+                <span>💡</span>
+                <span>Evaluasi & Saran Pembelajaran</span>
+            </h2>
+            <div class="feedback-cards" id="feedbackCards">
                 <!-- Will be populated by JavaScript -->
             </div>
+        </div>
+
+        <!-- Evaluation Table -->
+        <div class="chart-container">
+            <h2 class="chart-title">📝 Evaluasi Pekerjaan yang Telah Diselesaikan</h2>
+            <table class="evaluation-table" id="evaluationTable">
+                <thead class="evaluation-header">
+                    <tr>
+                        <th>Level</th>
+                        <th>Persentase</th>
+                        <th>Skor</th>
+                        <th>Waktu</th>
+                        <th>Predikat</th>
+                    </tr>
+                </thead>
+                <tbody id="evaluationBody">
+                    <!-- Will be populated by JavaScript -->
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -934,8 +1233,9 @@
             const averageScore = completedLevels > 0 ? Math.round(totalPercentage / completedLevels) : 0;
             document.getElementById('averageScore').textContent = averageScore + '%';
 
+            generateFeedback();
             loadLevelProgress();
-            loadActivityChart();
+            loadEvaluationTable();
         }
 
         // Load level progress (compact grid)
@@ -1011,25 +1311,258 @@
             window.location.href = `lesson.html?level=${level}`;
         }
 
-        // Load activity chart
-        function loadActivityChart() {
-            const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-            const container = document.getElementById('activityChart');
-            container.innerHTML = '';
+        // Generate personalized feedback based on performance
+        function generateFeedback() {
+            const feedbackCards = document.getElementById('feedbackCards');
+            feedbackCards.innerHTML = '';
 
-            const today = new Date().getDay();
+            const completedLevels = [];
+            let totalPercentage = 0;
+            let lowScoreLevels = [];
+            let perfectLevels = [];
 
-            days.forEach((day, index) => {
-                const isActive = index <= today;
-                const count = isActive ? Math.floor(Math.random() * 10) : 0;
+            // Collect performance data
+            for (let i = 1; i <= 100; i++) {
+                const percentage = parseInt(localStorage.getItem(`level_${i}_percentage`)) || 0;
+                if (percentage > 0) {
+                    completedLevels.push({ level: i, percentage: percentage });
+                    totalPercentage += percentage;
 
-                const dayHTML = `
-                    <div class="activity-day ${isActive ? 'active' : ''}">
-                        <div class="activity-day-name">${day}</div>
-                        <div class="activity-day-count">${count}</div>
+                    if (percentage < 70) {
+                        lowScoreLevels.push({ level: i, percentage: percentage });
+                    }
+                    if (percentage === 100) {
+                        perfectLevels.push(i);
+                    }
+                }
+            }
+
+            if (completedLevels.length === 0) {
+                feedbackCards.innerHTML = `
+                    <div class="feedback-card info">
+                        <div class="feedback-header">
+                            <div class="feedback-icon">🎯</div>
+                            <div class="feedback-type">Mulai Belajar</div>
+                        </div>
+                        <div class="feedback-message">
+                            Kamu belum menyelesaikan level apapun. Yuk mulai perjalanan belajar bahasa Inggrismu sekarang!
+                        </div>
+                        <div class="feedback-suggestion">
+                            💡 Saran: Mulai dari Level 1 untuk membangun fondasi yang kuat.
+                        </div>
                     </div>
                 `;
-                container.innerHTML += dayHTML;
+                return;
+            }
+
+            const averageScore = Math.round(totalPercentage / completedLevels.length);
+            const feedbacks = [];
+
+            // Feedback 1: Overall Performance
+            if (averageScore >= 85) {
+                feedbacks.push({
+                    type: 'success',
+                    icon: '🌟',
+                    title: 'Performa Luar Biasa!',
+                    message: `Rata-rata skormu ${averageScore}%! Kamu menguasai materi dengan sangat baik. Pertahankan konsistensi belajarmu!`,
+                    suggestion: '💡 Saran: Coba tingkatkan kecepatan mengerjakanmu tanpa mengurangi akurasi.',
+                    stats: [`${completedLevels.length} level selesai`, `${perfectLevels.length} level sempurna`]
+                });
+            } else if (averageScore >= 70) {
+                feedbacks.push({
+                    type: 'info',
+                    icon: '📚',
+                    title: 'Performa Bagus',
+                    message: `Rata-rata skormu ${averageScore}%. Kamu sudah cukup memahami materi, tapi masih ada ruang untuk berkembang!`,
+                    suggestion: '💡 Saran: Review kembali level yang skornya di bawah 80% untuk memperkuat pemahaman.',
+                    stats: [`${completedLevels.length} level selesai`, `Target: 85%+`]
+                });
+            } else {
+                feedbacks.push({
+                    type: 'warning',
+                    icon: '⚠️',
+                    title: 'Perlu Lebih Fokus',
+                    message: `Rata-rata skormu ${averageScore}%. Sepertinya kamu terburu-buru atau kurang fokus saat mengerjakan.`,
+                    suggestion: '💡 Saran: Luangkan waktu lebih banyak untuk membaca soal dengan teliti sebelum menjawab.',
+                    stats: [`${completedLevels.length} level selesai`, `Target: 70%+`]
+                });
+            }
+
+            // Feedback 2: Vocabulary Weakness
+            if (lowScoreLevels.length > 0) {
+                const weakLevels = lowScoreLevels.map(l => `Level ${l.level} (${l.percentage}%)`).slice(0, 3).join(', ');
+                feedbacks.push({
+                    type: 'danger',
+                    icon: '📖',
+                    title: 'Kekurangan Kosa Kata',
+                    message: `Kamu kesulitan di ${lowScoreLevels.length} level. Ini menunjukkan kamu perlu memperbanyak kosa kata bahasa Inggris.`,
+                    suggestion: `💡 Saran: Ulangi level berikut untuk meningkatkan pemahaman: ${weakLevels}`,
+                    stats: [`${lowScoreLevels.length} level < 70%`, 'Perlu review']
+                });
+            }
+
+            // Feedback 3: Consistency Check
+            if (completedLevels.length >= 5) {
+                const recentLevels = completedLevels.slice(-5);
+                const recentAverage = Math.round(recentLevels.reduce((sum, l) => sum + l.percentage, 0) / recentLevels.length);
+                
+                if (recentAverage < averageScore - 10) {
+                    feedbacks.push({
+                        type: 'warning',
+                        icon: '📉',
+                        title: 'Konsistensi Menurun',
+                        message: `Performa 5 level terakhirmu (${recentAverage}%) lebih rendah dari rata-rata keseluruhan (${averageScore}%). Mungkin kamu lelah atau kurang fokus?`,
+                        suggestion: '💡 Saran: Istirahat yang cukup dan belajar di waktu yang paling produktif untukmu.',
+                        stats: [`Rata-rata turun ${averageScore - recentAverage}%`, 'Perlu recovery']
+                    });
+                } else if (recentAverage > averageScore + 10) {
+                    feedbacks.push({
+                        type: 'success',
+                        icon: '📈',
+                        title: 'Progress Meningkat!',
+                        message: `Performa 5 level terakhirmu (${recentAverage}%) lebih tinggi dari rata-rata! Kamu semakin memahami materi dengan baik.`,
+                        suggestion: '💡 Saran: Pertahankan momentum ini! Konsistensi adalah kunci kesuksesan.',
+                        stats: [`Peningkatan ${recentAverage - averageScore}%`, 'Trending up! 🚀']
+                    });
+                }
+            }
+
+            // Feedback 4: Speed Analysis
+            let totalTime = 0;
+            completedLevels.forEach(level => {
+                const time = parseInt(localStorage.getItem(`level_${level.level}_time`)) || 0;
+                totalTime += time;
+            });
+            const avgTimePerLevel = Math.round(totalTime / completedLevels.length);
+
+            if (avgTimePerLevel > 300) { // > 5 minutes per level
+                feedbacks.push({
+                    type: 'info',
+                    icon: '⏱️',
+                    title: 'Kecepatan Bisa Ditingkatkan',
+                    message: `Rata-rata waktumu ${Math.floor(avgTimePerLevel / 60)} menit per level. Kamu mungkin terlalu lama berpikir atau kurang yakin dengan jawabanmu.`,
+                    suggestion: '💡 Saran: Latih kecepatan membaca dan percaya pada jawaban pertama yang terlintas di pikiranmu.',
+                    stats: [`Avg: ${Math.floor(avgTimePerLevel / 60)}:${(avgTimePerLevel % 60).toString().padStart(2, '0')}`, 'Target: < 5 menit']
+                });
+            }
+
+            // Feedback 5: Achievement Recognition
+            if (perfectLevels.length >= 3) {
+                feedbacks.push({
+                    type: 'success',
+                    icon: '🏆',
+                    title: 'Achievement Unlocked!',
+                    message: `Luar biasa! Kamu sudah menyelesaikan ${perfectLevels.length} level dengan skor sempurna 100%!`,
+                    suggestion: '💡 Keep it up! Targetkan untuk mendapatkan 100% di semua level.',
+                    stats: [`${perfectLevels.length} perfect scores`, '100% accuracy']
+                });
+            }
+
+            // Render feedbacks
+            feedbacks.forEach(feedback => {
+                const card = document.createElement('div');
+                card.className = `feedback-card ${feedback.type}`;
+                card.innerHTML = `
+                    <div class="feedback-header">
+                        <div class="feedback-icon">${feedback.icon}</div>
+                        <div class="feedback-type">${feedback.title}</div>
+                    </div>
+                    <div class="feedback-message">${feedback.message}</div>
+                    ${feedback.stats ? `
+                        <div class="feedback-stats">
+                            ${feedback.stats.map(stat => `<div class="feedback-stat-item">${stat}</div>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="feedback-suggestion">${feedback.suggestion}</div>
+                `;
+                feedbackCards.appendChild(card);
+            });
+        }
+
+        // Load evaluation table
+        function loadEvaluationTable() {
+            const tbody = document.getElementById('evaluationBody');
+            tbody.innerHTML = '';
+
+            const completedLevels = [];
+
+            // Collect all completed levels
+            for (let i = 1; i <= 100; i++) {
+                const percentage = parseInt(localStorage.getItem(`level_${i}_percentage`)) || 0;
+                if (percentage > 0) {
+                    const score = parseInt(localStorage.getItem(`level_${i}_score`)) || 0;
+                    const time = parseInt(localStorage.getItem(`level_${i}_time`)) || 0;
+                    
+                    completedLevels.push({
+                        level: i,
+                        percentage: percentage,
+                        score: score,
+                        time: time
+                    });
+                }
+            }
+
+            // If no levels completed, show empty state
+            if (completedLevels.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="eval-empty">
+                            <div class="eval-empty-icon">📭</div>
+                            <div class="eval-empty-text">Belum ada level yang diselesaikan</div>
+                            <div style="margin-top: 10px; font-size: 0.9rem;">Mulai kerjakan level untuk melihat evaluasi!</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Sort by level number (descending - newest first)
+            completedLevels.sort((a, b) => b.level - a.level);
+
+            // Display each completed level
+            completedLevels.forEach(level => {
+                const minutes = Math.floor(level.time / 60);
+                const seconds = level.time % 60;
+                const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                let percentageClass = 'average';
+                let badgeClass = 'good';
+                let badgeText = 'Cukup';
+
+                if (level.percentage >= 90) {
+                    percentageClass = 'excellent';
+                    badgeClass = 'perfect';
+                    badgeText = 'Sempurna';
+                } else if (level.percentage >= 70) {
+                    percentageClass = 'good';
+                    badgeClass = 'great';
+                    badgeText = 'Bagus';
+                }
+
+                const row = document.createElement('tr');
+                row.className = 'evaluation-row';
+                row.onclick = () => goToLevel(level.level);
+                row.innerHTML = `
+                    <td>
+                        <div class="eval-level">
+                            <span class="eval-level-icon">${levelEmojis[level.level]}</span>
+                            <span>Level ${level.level}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eval-percentage ${percentageClass}">${level.percentage}%</div>
+                    </td>
+                    <td>
+                        <div class="eval-score">${level.score} poin</div>
+                    </td>
+                    <td>
+                        <div class="eval-time">⏱️ ${timeStr}</div>
+                    </td>
+                    <td>
+                        <span class="eval-badge ${badgeClass}">${badgeText}</span>
+                    </td>
+                `;
+                tbody.appendChild(row);
             });
         }
 
